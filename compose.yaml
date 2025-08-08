@@ -1,0 +1,51 @@
+# Comments are provided throughout this file to help you get started.
+# If you need more help, visit the Docker Compose reference guide at
+# https://docs.docker.com/go/compose-spec-reference/
+
+# Here the instructions define your application as a service called "server".
+# This service is built from the Dockerfile in the current directory.
+# You can add other services your application may depend on here, such as a
+# database or a cache. For examples, see the Awesome Compose repository:
+# https://github.com/docker/awesome-compose
+services:
+  server:
+    build:
+      context: .
+    env_file:
+      - .env
+    environment:
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD?Variable not set}
+      - DATABASE_USER=${DATABASE_USER:-user}
+      - DATABASE_NAME=${DATABASE_NAME:-e-commerce}
+      - DATABASE_HOST=db
+    ports:
+      - ${BACKEND_PORT:-8080}:8080
+    develop:
+      watch:
+        - path: .
+          action: rebuild
+        - path: ./src
+          action: sync
+          target: /build/src
+    depends_on:
+      - db
+  db:
+    image: mysql:oraclelinux9
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DATABASE_PASSWORD?Variable not set}
+      - MYSQL_ALLOW_EMPTY_PASSWORD=no
+      - MYSQL_USER=${DATABASE_USER:-user}
+      - MYSQL_DATABASE=${DATABASE_NAME:-e-commerce}
+    ports:
+      - ${DATABASE_PORT:-3306}:3306
+    volumes:
+      - app-data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+volumes:
+  app-data:
