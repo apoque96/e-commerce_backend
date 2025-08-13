@@ -1,6 +1,9 @@
 CREATE TABLE customer
 (
     customer_id       BINARY(16)   NOT NULL,
+    created_at        datetime     NOT NULL,
+    updated_at        datetime NULL,
+    deleted_at        datetime NULL,
     registration_date datetime     NOT NULL,
     username          VARCHAR(255) NOT NULL,
     email             VARCHAR(255) NOT NULL,
