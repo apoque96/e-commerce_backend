@@ -22,6 +22,9 @@ public class Product extends BaseEntity{
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "extra_info_id")
+    private ExtraInfo extraInfo;
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
