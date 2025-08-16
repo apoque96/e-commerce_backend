@@ -11,3 +11,6 @@ spring:
     username: root
     password: ${DATABASE_PASSWORD:password}
     driver-class-name: com.mysql.cj.jdbc.Driver
+  flyway:
+    enabled: true
+    validate-on-migrate: true
