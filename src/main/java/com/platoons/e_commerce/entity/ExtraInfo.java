@@ -6,8 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.UUID;
+import org.hibernate.annotations.UuidGenerator;
 
 @Entity
 @Table(name = "extra_info")
@@ -17,8 +16,8 @@ import java.util.UUID;
 @Setter
 public class ExtraInfo extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID extraInfoId;
+    @UuidGenerator
+    private String extraInfoId;
 
     @OneToOne(mappedBy = "extraInfo")
     private Product product;

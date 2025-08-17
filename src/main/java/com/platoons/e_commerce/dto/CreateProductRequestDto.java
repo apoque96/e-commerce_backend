@@ -1,43 +1,24 @@
-package com.platoons.e_commerce.entity;
+package com.platoons.e_commerce.dto;
 
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.annotations.UuidGenerator;
 
-import java.util.Set;
+import java.util.List;
 
-@Entity
-@Table(name = "product")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Product extends BaseEntity{
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "extra_info_id")
-    private ExtraInfo extraInfo;
-
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-    private Set<ProductImage> productImages;
-
-    @Id
-    @UuidGenerator
-    private String productId;
-
+public class CreateProductRequestDto {
     @NotNull(message = "Name is required")
     @NotBlank(message = "Name is required")
     private String name;
 
     private double discount;
-
-    private double discountAmount;
 
     private String measurements;
 
@@ -52,4 +33,9 @@ public class Product extends BaseEntity{
 
     @NotNull(message = "Stock quantity is required")
     private int stockQuantity;
+
+    @NotNull(message = "Category is required")
+    private Long categoryId;
+
+    private List<String> colors;
 }
