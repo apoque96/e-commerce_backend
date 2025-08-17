@@ -39,7 +39,7 @@ public class ProductController {
 
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
-                .path("/{id}")
+                .path("/api/v1/product/{id}")
                 .build(String.valueOf(productId));
 
         log.info("Product created with id {}", productId);
