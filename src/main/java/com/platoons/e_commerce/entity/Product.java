@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -25,6 +26,9 @@ public class Product extends BaseEntity{
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "extra_info_id")
     private ExtraInfo extraInfo;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private Set<ProductImage> productImages;
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
