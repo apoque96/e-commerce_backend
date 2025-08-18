@@ -1,6 +1,7 @@
 package com.platoons.e_commerce.controller;
 
 import com.platoons.e_commerce.dto.CreateProductRequestDto;
+import com.platoons.e_commerce.dto.FetchProductResponseDto;
 import com.platoons.e_commerce.dto.GenericResponseDto;
 import com.platoons.e_commerce.service.IProductService;
 import jakarta.transaction.Transactional;
@@ -23,6 +24,13 @@ import java.net.URI;
 public class ProductController {
 
     private final IProductService productService;
+
+    @GetMapping("/{productId}")
+    public ResponseEntity<FetchProductResponseDto> fetchProduct(@PathVariable String productId){
+        log.info("Fetching product");
+
+        return ResponseEntity.ok(productService.fetchProduct(productId));
+    }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<GenericResponseDto> createProduct(

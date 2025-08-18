@@ -1,6 +1,7 @@
 package com.platoons.e_commerce.service.impl;
 
 import com.platoons.e_commerce.dto.CreateProductRequestDto;
+import com.platoons.e_commerce.dto.FetchProductResponseDto;
 import com.platoons.e_commerce.entity.Category;
 import com.platoons.e_commerce.entity.ExtraInfo;
 import com.platoons.e_commerce.entity.Product;
@@ -33,6 +34,17 @@ public class ProductServiceImpl implements IProductService {
     private final ProductImageRepository productImageRepository;
     private final CategoryRepository categoryRepository;
     private final ExtraInfoRepository extraInfoRepository;
+
+    @Override
+    public FetchProductResponseDto fetchProduct(String productId) {
+        Product savedProduct = productRepository
+                .findByProductIdAndDeletedAtIsNull(productId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "product", "productId", productId));
+
+        return ProductMapper.mapProductToFetchProductResponseDto(
+                savedProduct, new FetchProductResponseDto());
+    }
 
     @Override
     public String createProduct(MultipartFile[] images, CreateProductRequestDto productDto) {
