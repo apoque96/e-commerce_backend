@@ -60,4 +60,20 @@ public class ProductController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, path = "/{productId}")
+    public ResponseEntity<GenericResponseDto> updateProduct(
+            @RequestPart(name = "image") MultipartFile[] images,
+            @Valid @RequestPart CreateProductRequestDto productDto,
+            @PathVariable String productId
+    ){
+        log.info("Updating product");
+
+        String productIdReturned = productService.updateProduct(
+                images, productDto, productId);
+
+        log.info("Updated product with id {}", productIdReturned);
+        return ResponseEntity.ok(
+                new GenericResponseDto("Successfully updated product"));
+    }
 }

@@ -46,8 +46,7 @@ public class ProductServiceImpl implements IProductService {
                 savedProduct, new FetchProductResponseDto());
     }
 
-    @Override
-    public String createProduct(MultipartFile[] images, CreateProductRequestDto productDto) {
+    private String saveProduct(MultipartFile[] images, CreateProductRequestDto productDto, Product product){
         List<String> colors = productDto.getColors();
 
         // Checks that there is the same amount of colors and images
@@ -56,8 +55,8 @@ public class ProductServiceImpl implements IProductService {
                     "Quantity of images sent does not equal amount of colors sent");
 
         // Maps the dto to the entity
-        Product product = ProductMapper.mapCreateProductRequestDtoToProduct(
-                productDto, new Product()
+        ProductMapper.mapCreateProductRequestDtoToProduct(
+                productDto, product
         );
 
         ExtraInfo extraInfo = new ExtraInfo();
@@ -111,6 +110,11 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
+    public String createProduct(MultipartFile[] images, CreateProductRequestDto productDto) {
+        return saveProduct(images, productDto, new Product());
+    }
+
+    @Override
     public void deleteProduct(String productId) {
         var optionalProduct = productRepository.findById(productId);
 
@@ -121,5 +125,15 @@ public class ProductServiceImpl implements IProductService {
         var savedProduct = optionalProduct.get();
         savedProduct.setDeletedAt(LocalDateTime.now());
         productRepository.save(savedProduct);
+    }
+
+    @Override
+    public String updateProduct(MultipartFile[] images, CreateProductRequestDto productDto, String productId) {
+        // Checks that the product exists
+        var savedProduct = productRepository.findByProductIdAndDeletedAtIsNull(productId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "product", "productId", productId));
+
+        return saveProduct(images, productDto, savedProduct);
     }
 }

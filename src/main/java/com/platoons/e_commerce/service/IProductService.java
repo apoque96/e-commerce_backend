@@ -10,4 +10,6 @@ public interface IProductService {
     String createProduct(
             MultipartFile[] images, CreateProductRequestDto productDto);
     void deleteProduct(String productId);
+    String updateProduct(
+            MultipartFile[] images, CreateProductRequestDto productDto, String productId);
 }
