@@ -6,9 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.UuidGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "customer")
@@ -18,8 +18,8 @@ import java.util.UUID;
 @Setter
 public class Customer extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID customerId;
+    @UuidGenerator
+    private String customerId;
 
     @NotNull
     @Column(updatable = false)
