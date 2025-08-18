@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,5 +96,18 @@ public class ProductServiceImpl implements IProductService {
 
 
         return savedProduct.getProductId();
+    }
+
+    @Override
+    public void deleteProduct(String productId) {
+        var optionalProduct = productRepository.findById(productId);
+
+        // Early return for products that don't exist
+        if(optionalProduct.isEmpty())
+            return;
+
+        var savedProduct = optionalProduct.get();
+        savedProduct.setDeletedAt(LocalDateTime.now());
+        productRepository.save(savedProduct);
     }
 }

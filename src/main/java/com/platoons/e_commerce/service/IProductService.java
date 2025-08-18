@@ -9,4 +9,5 @@ import java.util.UUID;
 public interface IProductService {
     String createProduct(
             MultipartFile[] images, CreateProductRequestDto productDto);
+    void deleteProduct(String productId);
 }
