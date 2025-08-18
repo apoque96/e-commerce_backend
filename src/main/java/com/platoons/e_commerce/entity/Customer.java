@@ -2,10 +2,7 @@ package com.platoons.e_commerce.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import java.time.LocalDateTime;
@@ -16,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Customer extends BaseEntity {
     @Id
     @UuidGenerator
@@ -31,6 +29,9 @@ public class Customer extends BaseEntity {
     @Column(unique = true)
     @NotNull
     private String username;
+
+    @NotNull(message = "Password is required")
+    private String passwordHash;
 
     @Email
     @Column(unique = true)
