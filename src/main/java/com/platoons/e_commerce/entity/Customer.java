@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 public class Customer extends BaseEntity {
     @Id
     @UuidGenerator
