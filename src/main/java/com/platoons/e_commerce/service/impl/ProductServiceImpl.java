@@ -1,6 +1,7 @@
 package com.platoons.e_commerce.service.impl;
 
 import com.platoons.e_commerce.dto.CreateProductRequestDto;
+import com.platoons.e_commerce.dto.FetchProductResponseDto;
 import com.platoons.e_commerce.entity.Category;
 import com.platoons.e_commerce.entity.ExtraInfo;
 import com.platoons.e_commerce.entity.Product;
@@ -19,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +36,17 @@ public class ProductServiceImpl implements IProductService {
     private final ExtraInfoRepository extraInfoRepository;
 
     @Override
-    public String createProduct(MultipartFile[] images, CreateProductRequestDto productDto) {
+    public FetchProductResponseDto fetchProduct(String productId) {
+        Product savedProduct = productRepository
+                .findByProductIdAndDeletedAtIsNull(productId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "product", "productId", productId));
+
+        return ProductMapper.mapProductToFetchProductResponseDto(
+                savedProduct, new FetchProductResponseDto());
+    }
+
+    private String saveProduct(MultipartFile[] images, CreateProductRequestDto productDto, Product product){
         List<String> colors = productDto.getColors();
 
         // Checks that there is the same amount of colors and images
@@ -43,8 +55,8 @@ public class ProductServiceImpl implements IProductService {
                     "Quantity of images sent does not equal amount of colors sent");
 
         // Maps the dto to the entity
-        Product product = ProductMapper.mapCreateProductRequestDtoToProduct(
-                productDto, new Product()
+        ProductMapper.mapCreateProductRequestDtoToProduct(
+                productDto, product
         );
 
         ExtraInfo extraInfo = new ExtraInfo();
@@ -95,5 +107,33 @@ public class ProductServiceImpl implements IProductService {
 
 
         return savedProduct.getProductId();
+    }
+
+    @Override
+    public String createProduct(MultipartFile[] images, CreateProductRequestDto productDto) {
+        return saveProduct(images, productDto, new Product());
+    }
+
+    @Override
+    public void deleteProduct(String productId) {
+        var optionalProduct = productRepository.findById(productId);
+
+        // Early return for products that don't exist
+        if(optionalProduct.isEmpty())
+            return;
+
+        var savedProduct = optionalProduct.get();
+        savedProduct.setDeletedAt(LocalDateTime.now());
+        productRepository.save(savedProduct);
+    }
+
+    @Override
+    public String updateProduct(MultipartFile[] images, CreateProductRequestDto productDto, String productId) {
+        // Checks that the product exists
+        var savedProduct = productRepository.findByProductIdAndDeletedAtIsNull(productId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "product", "productId", productId));
+
+        return saveProduct(images, productDto, savedProduct);
     }
 }

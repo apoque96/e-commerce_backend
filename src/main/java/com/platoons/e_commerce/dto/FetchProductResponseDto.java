@@ -1,12 +1,9 @@
 package com.platoons.e_commerce.dto;
 
-import com.platoons.e_commerce.entity.Category;
-import com.platoons.e_commerce.entity.ExtraInfo;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,11 +11,9 @@ import java.util.UUID;
 @Setter
 @ToString
 public class FetchProductResponseDto {
-    private UUID productId;
+    private String productId;
 
-    private Category category;
-
-    private ExtraInfo extraInfo;
+    private String category;
 
     private List<ProductImageDto> productImages;
 
@@ -31,6 +26,10 @@ public class FetchProductResponseDto {
     private String measurements;
 
     private String description;
+
+    private double price;
+
+    private int stockQuantity;
 
     private String packaging;
 
