@@ -1,39 +1,23 @@
-package com.platoons.e_commerce.entity;
+package com.platoons.e_commerce.dto;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import org.hibernate.annotations.UuidGenerator;
-import org.springframework.data.annotation.CreatedDate;
-import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "customer")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Customer extends BaseEntity {
-    @Id
-    @UuidGenerator
-    private String customerId;
-
-    @NotNull
-    @Column(updatable = false)
-    @CreatedDate
-    private LocalDateTime registrationDate;
-
+@ToString
+public class UpdateCustomerRequestDto {
     @Size(min = 2, message = "Username must be at least 2 characters long")
     @Size(max = 32, message = "Username must be at most 32 characters long")
-    @Column(unique = true)
     @NotNull
     private String username;
 
     @NotNull(message = "Password is required")
-    private String passwordHash;
+    private String password;
 
     @Email
-    @Column(unique = true)
     @NotNull
     private String email;
 
