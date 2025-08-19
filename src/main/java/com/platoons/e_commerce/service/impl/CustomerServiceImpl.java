@@ -10,6 +10,8 @@ import com.platoons.e_commerce.service.ICustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements ICustomerService {
@@ -32,5 +34,18 @@ public class CustomerServiceImpl implements ICustomerService {
                 .orElseThrow(() -> new EntityNotFoundException("customer", "customerId", customerId));
         
         return CustomerMapper.mapCustomerToCustomerDto(savedCustomer, new CustomerDto());
+    }
+
+    @Override
+    public void deleteCustomer(String customerId) {
+        var optionalCustomer = customerRepository.findById(customerId);
+
+        // Early return for customers that don't exist
+        if(optionalCustomer.isEmpty())
+            return;
+
+        var savedCustomer = optionalCustomer.get();
+        savedCustomer.setDeletedAt(LocalDateTime.now());
+        customerRepository.save(savedCustomer);
     }
 }

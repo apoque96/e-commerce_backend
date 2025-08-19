@@ -46,4 +46,12 @@ public class CustomerController {
         return ResponseEntity.created(uri).body(
                 new GenericResponseDto("Successfully created customer"));
     }
+
+    @DeleteMapping("/{customerId}")
+    public ResponseEntity<Object> deleteCustomer(@PathVariable String customerId){
+        log.info("Deleting customer");
+
+        customerService.deleteCustomer(customerId);
+        return ResponseEntity.noContent().build();
+    }
 }

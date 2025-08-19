@@ -6,4 +6,5 @@ import com.platoons.e_commerce.dto.CustomerDto;
 public interface ICustomerService {
     String createCustomer(CreateUserRequestDto userDto);
     CustomerDto fetchCustomer(String customerId);
+    void deleteCustomer(String customerId);
 }
