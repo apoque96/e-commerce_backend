@@ -3,8 +3,8 @@ package com.platoons.e_commerce.controller;
 import com.platoons.e_commerce.dto.CreateUserRequestDto;
 import com.platoons.e_commerce.dto.CustomerDto;
 import com.platoons.e_commerce.dto.GenericResponseDto;
+import com.platoons.e_commerce.dto.UpdateCustomerRequestDto;
 import com.platoons.e_commerce.service.ICustomerService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -30,11 +30,11 @@ public class CustomerController {
 
     @PostMapping
     public ResponseEntity<GenericResponseDto> createCustomer(
-            @RequestBody CreateUserRequestDto userDto
+            @RequestBody CreateUserRequestDto customerDto
     ){
         log.info("Creating customer");
 
-        String customerId = customerService.createCustomer(userDto);
+        String customerId = customerService.createCustomer(customerDto);
 
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
@@ -53,5 +53,23 @@ public class CustomerController {
 
         customerService.deleteCustomer(customerId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{customerId}")
+    public ResponseEntity<GenericResponseDto> updateCustomer(
+            @RequestBody UpdateCustomerRequestDto customerDto, @PathVariable String customerId){
+        log.info("Updating customer");
+
+        String savedCustomerId = customerService.updateCustomer(customerDto, customerId);
+
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path("/api/v1/customer/{id}")
+                .build(String.valueOf(savedCustomerId));
+
+        log.info("Customer updated with id {}", savedCustomerId);
+
+        return ResponseEntity.created(uri).body(
+                new GenericResponseDto("Successfully updated customer"));
     }
 }

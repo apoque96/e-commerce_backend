@@ -2,6 +2,7 @@ package com.platoons.e_commerce.service.impl;
 
 import com.platoons.e_commerce.dto.CreateUserRequestDto;
 import com.platoons.e_commerce.dto.CustomerDto;
+import com.platoons.e_commerce.dto.UpdateCustomerRequestDto;
 import com.platoons.e_commerce.entity.Customer;
 import com.platoons.e_commerce.exceptions.EntityNotFoundException;
 import com.platoons.e_commerce.mapper.CustomerMapper;
@@ -19,9 +20,9 @@ public class CustomerServiceImpl implements ICustomerService {
     private final CustomerRepository customerRepository;
 
     @Override
-    public String createCustomer(CreateUserRequestDto userDto) {
+    public String createCustomer(CreateUserRequestDto customerDto) {
         Customer customer =
-                CustomerMapper.mapCreateUserRequestDtoToCustomer(userDto, new Customer());
+                CustomerMapper.mapCreateUserRequestDtoToCustomer(customerDto, new Customer());
 
         var savedCustomer = customerRepository.save(customer);
 
@@ -47,5 +48,16 @@ public class CustomerServiceImpl implements ICustomerService {
         var savedCustomer = optionalCustomer.get();
         savedCustomer.setDeletedAt(LocalDateTime.now());
         customerRepository.save(savedCustomer);
+    }
+
+    @Override
+    public String updateCustomer(UpdateCustomerRequestDto customerDto, String customerId) {
+        Customer customer =
+                customerRepository.findByCustomerIdAndDeletedAtIsNull(customerId)
+                        .orElseThrow(() -> new EntityNotFoundException("customer", "customerId", customerId));
+
+        CustomerMapper.mapUpdateCustomerRequestDtoToCustomer(customerDto, customer);
+
+        return customer.getCustomerId();
     }
 }
