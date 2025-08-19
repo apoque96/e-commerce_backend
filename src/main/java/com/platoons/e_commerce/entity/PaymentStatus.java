@@ -9,15 +9,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "payment_status")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class PaymentStatus {
+public class PaymentStatus extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,11 +29,4 @@ public class PaymentStatus {
 
     @Size(max = 255, message = "Description must not exceed 255 characters")
     private String description;
-
-    @NotNull(message = "Created date is required")
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-    private LocalDateTime deletedAt;
 }
