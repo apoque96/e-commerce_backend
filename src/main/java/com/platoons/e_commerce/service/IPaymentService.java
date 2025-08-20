@@ -7,9 +7,9 @@ import com.platoons.e_commerce.dto.UpdatePaymentDto;
 public interface IPaymentService {
     String createPayment(CreatePaymentRequestDto paymentDto);
 
-    PaymentDto fetchPayment(String paymentId);
+    PaymentDto fetchPayment(Long paymentId);
 
-    void deletePayment(String paymentId);
+    void deletePayment(Long paymentId);
 
-    String updatePayment(UpdatePaymentDto paymentDto, String paymentId);
+    String updatePayment(UpdatePaymentDto paymentDto, Long paymentId);
 }

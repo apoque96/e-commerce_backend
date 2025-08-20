@@ -28,7 +28,7 @@ public class PaymentController {
     private final IPaymentService paymentService;
 
     @GetMapping("/{paymentId}")
-    public ResponseEntity<PaymentDto> fetchPayment(@PathVariable String paymentId) {
+    public ResponseEntity<PaymentDto> fetchPayment(@PathVariable Long paymentId) {
         log.info("Fetching payment");
 
         return ResponseEntity.ok(paymentService.fetchPayment(paymentId));
@@ -48,16 +48,16 @@ public class PaymentController {
     }
 
     @DeleteMapping("/{paymentId}")
-    public ResponseEntity<Object> deletePayment(@PathVariable String paymentId) {
+    public ResponseEntity<Object> deletePayment(@PathVariable Long paymentId) {
         log.info("Deleting Payment");
 
         paymentService.deletePayment(paymentId);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{customerId}")
+    @PutMapping("/{paymentId}")
     public ResponseEntity<GenericResponseDto> updatePayment(@RequestBody UpdatePaymentDto paymentDto,
-            @PathVariable String paymentId) {
+            @PathVariable Long paymentId) {
         log.info("Updating Payment");
 
         String savedPaymentid = paymentService.updatePayment(paymentDto, paymentId);

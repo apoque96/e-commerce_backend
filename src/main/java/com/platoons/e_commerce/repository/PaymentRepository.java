@@ -7,9 +7,9 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface PaymentRepository extends CrudRepository<Payment, String> {
+public interface PaymentRepository extends CrudRepository<Payment, Long> {
 
     // Busca un pago por su ID y que no esté eliminado (soft delete)
-    Optional<Payment> findByPaymentIdAndDeletedAtIsNull(String paymentId);
+    Optional<Payment> findByPaymentIdAndDeletedAtIsNull(Long paymentId);
 
 }

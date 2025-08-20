@@ -45,6 +45,14 @@ public class Order extends BaseEntity {
     )
     private Coupon coupon;
 
+    // FK a Review
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+        name = "review_id",
+        foreignKey = @ForeignKey(name = "fk_order_review")
+    )
+    private Review review;
+
     // Subtotal amount
     @NotNull(message = "Subtotal is required")
     @DecimalMin(value = "0.0", inclusive = false, message = "Subtotal must be positive")

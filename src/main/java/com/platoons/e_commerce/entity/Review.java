@@ -43,10 +43,12 @@ public class Review extends BaseEntity {
     @NotNull(message = "customer is required")
     private Customer customer;
 
-    // @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    // @JoinColumn(name = "order_product_id", nullable = false)
-    // @NotNull(message = "order product is required")
-    // private OrderProduct orderProduct;
+     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+     @JoinColumn(name = "order_product_id", nullable = false)
+     @NotNull(message = "order product is required")
+     private OrderProduct orderProduct;
+
+
     @NotBlank(message = "comment is required")
     @Size(max = 4000, message = "comment is too long")
     @Column(nullable = false, length = 4000)
