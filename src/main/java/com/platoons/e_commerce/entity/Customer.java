@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "customer")
@@ -17,6 +18,9 @@ public class Customer extends BaseEntity {
     @Id
     @UuidGenerator
     private String customerId;
+
+    @OneToMany(mappedBy = "customer")
+    private Set<Authority> authorities;
 
     @NotNull
     @Column(updatable = false)

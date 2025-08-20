@@ -14,7 +14,6 @@ import com.platoons.e_commerce.repository.PaymentRepository;
 import com.platoons.e_commerce.service.IPaymentService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.var;
 
 @Service
 @RequiredArgsConstructor
@@ -32,15 +31,15 @@ public class PaymenteServiceImpl implements IPaymentService {
     }
 
     @Override
-    public PaymentDto fetchPayment(String paymentId) {
+    public PaymentDto fetchPayment(Long paymentId) {
         var savedPayment = paymentRepository.findByPaymentIdAndDeletedAtIsNull(paymentId)
-                .orElseThrow(() -> new EntityNotFoundException("payment", "paymentId", paymentId));
+                .orElseThrow(() -> new EntityNotFoundException("payment", "paymentId", paymentId.toString()));
 
         return PaymentMapper.mapPaymentToPaymentDto(savedPayment, new PaymentDto());
     }
 
     @Override
-    public void deletePayment(String paymentId) {
+    public void deletePayment(Long paymentId) {
         var optionalPayment = paymentRepository.findById(paymentId);
 
         if (optionalPayment.isEmpty())
@@ -52,9 +51,9 @@ public class PaymenteServiceImpl implements IPaymentService {
     }
 
     @Override
-    public String updatePayment(UpdatePaymentDto paymentDto, String paymentId) {
+    public String updatePayment(UpdatePaymentDto paymentDto, Long paymentId) {
         Payment payment = paymentRepository.findByPaymentIdAndDeletedAtIsNull(paymentId)
-                .orElseThrow(() -> new EntityNotFoundException("payment", "paymentId", paymentId));
+                .orElseThrow(() -> new EntityNotFoundException("payment", "paymentId", paymentId.toString()));
 
         PaymentMapper.mapUpdatePaymentDtoToPayment(paymentDto, payment);
 
