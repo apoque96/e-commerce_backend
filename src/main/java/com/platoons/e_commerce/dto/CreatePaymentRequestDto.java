@@ -1,24 +1,17 @@
-package com.platoons.e_commerce.entity;
-
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+package com.platoons.e_commerce.dto;
 
 import java.time.LocalDateTime;
+import jakarta.validation.constraints.*;
+import lombok.*;
 
-@Entity
-@Table(name = "payment")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Payment extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CreatePaymentRequestDto {
+
+    @NotNull(message = "Payment ID is required")
     private Long paymentId;
 
     @NotNull(message = "Amount is required")
@@ -35,12 +28,9 @@ public class Payment extends BaseEntity {
     @Size(max = 255, message = "Description must not exceed 255 characters")
     private String description;
 
-    // Relaciones
-    @OneToOne
-    @JoinColumn(name = "method_id")
-    private PaymentMethod paymentMethod;
+    @NotNull(message = "Payment method is required")
+    private Long methodId;
 
-    @OneToOne
-    @JoinColumn(name = "status_id")
-    private PaymentStatus paymentStatus;
+    @NotNull(message = "Payment status is required")
+    private Long statusId;
 }

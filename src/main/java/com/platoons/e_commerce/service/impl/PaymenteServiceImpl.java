@@ -1,0 +1,63 @@
+package com.platoons.e_commerce.service.impl;
+
+import java.time.LocalDateTime;
+
+import org.springframework.stereotype.Service;
+
+import com.platoons.e_commerce.dto.CreatePaymentRequestDto;
+import com.platoons.e_commerce.dto.PaymentDto;
+import com.platoons.e_commerce.dto.UpdatePaymentDto;
+import com.platoons.e_commerce.entity.Payment;
+import com.platoons.e_commerce.exceptions.EntityNotFoundException;
+import com.platoons.e_commerce.mapper.PaymentMapper;
+import com.platoons.e_commerce.repository.PaymentRepository;
+import com.platoons.e_commerce.service.IPaymentService;
+
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.var;
+
+@Service
+@RequiredArgsConstructor
+public class PaymenteServiceImpl implements IPaymentService {
+
+    private final PaymentRepository paymentRepository;
+
+    @Override
+    public String createPayment(CreatePaymentRequestDto paymentDto) {
+        Payment payment = PaymentMapper.mapCreatePaymentRequestDtoToPayment(paymentDto, new Payment());
+
+        var savedPayment = paymentRepository.save(payment);
+
+        return String.valueOf(savedPayment.getPaymentId());
+    }
+
+    @Override
+    public PaymentDto fetchPayment(String paymentId) {
+        var savedPayment = paymentRepository.findByPaymentIdAndDeletedAtIsNull(paymentId)
+                .orElseThrow(() -> new EntityNotFoundException("payment", "paymentId", paymentId));
+
+        return PaymentMapper.mapPaymentToPaymentDto(savedPayment, new PaymentDto());
+    }
+
+    @Override
+    public void deletePayment(String paymentId) {
+        var optionalPayment = paymentRepository.findById(paymentId);
+
+        if (optionalPayment.isEmpty())
+            return;
+
+        var savedPayment = optionalPayment.get();
+        savedPayment.setDeletedAt(LocalDateTime.now());
+        paymentRepository.save(savedPayment);
+    }
+
+    @Override
+    public String updatePayment(UpdatePaymentDto paymentDto, String paymentId) {
+        Payment payment = paymentRepository.findByPaymentIdAndDeletedAtIsNull(paymentId)
+                .orElseThrow(() -> new EntityNotFoundException("payment", "paymentId", paymentId));
+
+        PaymentMapper.mapUpdatePaymentDtoToPayment(paymentDto, payment);
+
+        return String.valueOf(payment.getPaymentId());
+    }
+}
