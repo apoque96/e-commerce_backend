@@ -17,7 +17,7 @@ public class UpdateOrderDto {
     private Long orderId;
 
     @NotNull(message = "Customer ID is required")
-    private Long customer;
+    private String customer;
 
     private Long couponId;
 
