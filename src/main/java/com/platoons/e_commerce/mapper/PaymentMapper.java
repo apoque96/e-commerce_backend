@@ -15,14 +15,6 @@ public class PaymentMapper {
         payment.setPaymentDate(paymentDto.getPaymentDate());
         payment.setBillName(paymentDto.getBillName());
         payment.setDescription(paymentDto.getDescription());
-
-        PaymentMethod method = new PaymentMethod();
-        method.setMethodId(paymentDto.getMethodId());
-        payment.setPaymentMethod(method);
-
-        PaymentStatus status = new PaymentStatus();
-        status.setStatusId(paymentDto.getStatusId());
-        payment.setPaymentStatus(status);
         return payment;
     }
 

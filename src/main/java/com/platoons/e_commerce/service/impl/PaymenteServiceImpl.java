@@ -6,8 +6,11 @@ import org.springframework.stereotype.Service;
 
 import com.platoons.e_commerce.dto.CreatePaymentRequestDto;
 import com.platoons.e_commerce.dto.PaymentDto;
+import com.platoons.e_commerce.dto.PaymentMethodDto;
 import com.platoons.e_commerce.dto.UpdatePaymentDto;
 import com.platoons.e_commerce.entity.Payment;
+import com.platoons.e_commerce.entity.PaymentMethod;
+import com.platoons.e_commerce.entity.PaymentStatus;
 import com.platoons.e_commerce.exceptions.EntityNotFoundException;
 import com.platoons.e_commerce.mapper.PaymentMapper;
 import com.platoons.e_commerce.repository.PaymentRepository;
@@ -27,6 +30,13 @@ public class PaymenteServiceImpl implements IPaymentService {
 
         var savedPayment = paymentRepository.save(payment);
 
+        PaymentMethod method = new PaymentMethod();
+        PaymentStatus status = new PaymentStatus();
+        Payment payment2 = new Payment();
+        payment2.setPaymentStatus(status);
+        payment2.setPaymentMethod(method);
+        paymentRepository.save(payment2);
+
         return String.valueOf(savedPayment.getPaymentId());
     }
 
@@ -34,7 +44,6 @@ public class PaymenteServiceImpl implements IPaymentService {
     public PaymentDto fetchPayment(Long paymentId) {
         var savedPayment = paymentRepository.findByPaymentIdAndDeletedAtIsNull(paymentId)
                 .orElseThrow(() -> new EntityNotFoundException("payment", "paymentId", paymentId.toString()));
-
         return PaymentMapper.mapPaymentToPaymentDto(savedPayment, new PaymentDto());
     }
 

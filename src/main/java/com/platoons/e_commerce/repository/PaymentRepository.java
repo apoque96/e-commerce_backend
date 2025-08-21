@@ -12,4 +12,5 @@ public interface PaymentRepository extends CrudRepository<Payment, Long> {
     // Busca un pago por su ID y que no esté eliminado (soft delete)
     Optional<Payment> findByPaymentIdAndDeletedAtIsNull(Long paymentId);
 
+
 }
