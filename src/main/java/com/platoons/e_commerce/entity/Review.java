@@ -6,7 +6,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -21,13 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(
-        name = "review",
-        indexes = {
-            @Index(name = "idx_review_customer_id", columnList = "customer_id"),
-            @Index(name = "idx_review_order_product_id", columnList = "order_product_id")
-        }
-)
+@Table(name = "review")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -43,10 +36,11 @@ public class Review extends BaseEntity {
     @NotNull(message = "customer is required")
     private Customer customer;
 
-    // @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    // @JoinColumn(name = "order_product_id", nullable = false)
-    // @NotNull(message = "order product is required")
-    // private OrderProduct orderProduct;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_product_id", nullable = false)
+    @NotNull(message = "order product is required")
+    private OrderProduct orderProduct;
+
     @NotBlank(message = "comment is required")
     @Size(max = 4000, message = "comment is too long")
     @Column(nullable = false, length = 4000)
