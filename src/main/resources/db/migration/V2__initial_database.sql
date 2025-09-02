@@ -1,3 +1,10 @@
+ALTER TABLE customer
+DROP
+COLUMN customer_id;
+
+ALTER TABLE customer
+    ADD customer_id VARCHAR(255) NOT NULL PRIMARY KEY;
+
 CREATE TABLE address
 (
     address_id     BIGINT AUTO_INCREMENT NOT NULL,
@@ -39,22 +46,6 @@ CREATE TABLE coupon
     coupon_code VARCHAR(20) NOT NULL,
     discount_amount DOUBLE NOT NULL,
     CONSTRAINT pk_coupon PRIMARY KEY (coupon_id)
-);
-
-CREATE TABLE customer
-(
-    customer_id       VARCHAR(255) NOT NULL,
-    created_at        datetime     NOT NULL,
-    updated_at        datetime NULL,
-    deleted_at        datetime NULL,
-    registration_date datetime     NOT NULL,
-    username          VARCHAR(255) NOT NULL,
-    password_hash     VARCHAR(255) NOT NULL,
-    email             VARCHAR(255) NOT NULL,
-    phone_number      VARCHAR(255) NULL,
-    first_name        VARCHAR(255) NOT NULL,
-    last_name         VARCHAR(255) NOT NULL,
-    CONSTRAINT pk_customer PRIMARY KEY (customer_id)
 );
 
 CREATE TABLE extra_info
@@ -235,17 +226,17 @@ CREATE TABLE wishlist_products
     CONSTRAINT pk_wishlist_products PRIMARY KEY (wishlist_product_id)
 );
 
+ALTER TABLE customer
+    ADD password_hash VARCHAR(255) NULL;
+
+ALTER TABLE customer
+    MODIFY password_hash VARCHAR (255) NOT NULL;
+
 ALTER TABLE wishlist
     ADD CONSTRAINT uc_8d409843b2a4f5adfbe8c9ba4 UNIQUE (customer_id);
 
 ALTER TABLE coupon
     ADD CONSTRAINT uc_coupon_couponcode UNIQUE (coupon_code);
-
-ALTER TABLE customer
-    ADD CONSTRAINT uc_customer_email UNIQUE (email);
-
-ALTER TABLE customer
-    ADD CONSTRAINT uc_customer_username UNIQUE (username);
 
 ALTER TABLE wishlist_products
     ADD CONSTRAINT uc_ebd23fa8a9043174078f67a14 UNIQUE (wishlist_id, product_id);
