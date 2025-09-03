@@ -29,7 +29,8 @@ public class CustomerMapper {
         return customerDto;
     }
 
-    public static Customer mapUpdateCustomerRequestDtoToCustomer(UpdateCustomerRequestDto customerDto, Customer customer){
+    public static Customer mapUpdateCustomerRequestDtoToCustomer(UpdateCustomerRequestDto customerDto,
+            Customer customer) {
         customer.setUsername(customerDto.getUsername());
         customer.setEmail(customerDto.getEmail());
         customer.setPasswordHash(customerDto.getPassword());
