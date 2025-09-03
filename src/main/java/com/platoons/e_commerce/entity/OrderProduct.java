@@ -33,18 +33,18 @@ public class OrderProduct extends BaseEntity {
     // FK  Product
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
-        name = "product_id",
-        nullable = false,
-        foreignKey = @ForeignKey(name = "fk_order_product_product")
+            name = "product_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "fk_order_product_product")
     )
     private Product product;
 
     // FK  Order
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
-        name = "order_id",
-        nullable = false,
-        foreignKey = @ForeignKey(name = "fk_order_product_order")
+            name = "order_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "fk_order_product_order")
     )
     private Order order;
 
