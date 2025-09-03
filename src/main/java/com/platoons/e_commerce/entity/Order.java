@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
@@ -31,27 +32,37 @@ public class Order extends BaseEntity {
     // FK a Customer
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
-        name = "customer_id",
-        nullable = false,
-        foreignKey = @ForeignKey(name = "fk_order_customer")
+            name = "customer_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "fk_order_customer")
     )
     private Customer customer;
 
     // FK a Coupon
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
-        name = "coupon_id",
-        foreignKey = @ForeignKey(name = "fk_order_coupon")
+            name = "coupon_id",
+            foreignKey = @ForeignKey(name = "fk_order_coupon")
     )
     private Coupon coupon;
 
-    // FK a Review
-    @ManyToOne(fetch = FetchType.LAZY)
+    // FK a OrderStatus
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
-        name = "review_id",
-        foreignKey = @ForeignKey(name = "fk_order_review")
+            name = "status_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "fk_order_status")
     )
-    private Review review;
+    private OrderStatus orderStatus;
+
+    // FK a payment
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(
+            name = "payment_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "fk_order_payment")
+    )
+    private Payment payment;
 
     // Subtotal amount
     @NotNull(message = "Subtotal is required")
