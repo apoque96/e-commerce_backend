@@ -22,4 +22,8 @@ public class ProductImageMapperTest {
         assertEquals("img_1", result.getImageUrl());
     }
 
+    @Test
+    void testConstructorProductImage() {
+        ProductImageMapper PIM = new ProductImageMapper();
+    }
 }
