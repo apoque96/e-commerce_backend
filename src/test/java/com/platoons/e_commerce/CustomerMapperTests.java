@@ -68,7 +68,6 @@ public class CustomerMapperTests {
         dto.setPhoneNumber("555-9999");
         dto.setFirstName("Jane");
         dto.setLastName("Smith");
-
         Customer customer = new Customer();
         customer.setCustomerId("2L");
         customer.setRegistrationDate(LocalDateTime.of(2023, 1, 1, 10, 0));
@@ -82,7 +81,7 @@ public class CustomerMapperTests {
         assertEquals("Jane", result.getFirstName());
         assertEquals("Smith", result.getLastName());
 
-        // Aseguramos que no se pierden datos previos
+        // Asecurate that we don't erase previous data
         assertEquals("2L", result.getCustomerId());
         assertEquals(LocalDateTime.of(2023, 1, 1, 10, 0), result.getRegistrationDate());
     }
