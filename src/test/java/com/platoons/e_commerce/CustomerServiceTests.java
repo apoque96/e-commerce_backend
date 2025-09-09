@@ -21,6 +21,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.platoons.e_commerce.dto.CreateUserRequestDto;
 import com.platoons.e_commerce.dto.CustomerDto;
@@ -31,6 +32,7 @@ import com.platoons.e_commerce.mapper.CustomerMapper;
 import com.platoons.e_commerce.repository.CustomerRepository;
 import com.platoons.e_commerce.service.impl.CustomerServiceImpl;
 
+@ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 public class CustomerServiceTests {
 
@@ -122,12 +124,11 @@ public class CustomerServiceTests {
 
         try (MockedStatic<CustomerMapper> mocked = mockStatic(CustomerMapper.class)) {
             mocked.when(() -> CustomerMapper.mapUpdateCustomerRequestDtoToCustomer(eq(dto), same(c)))
-                  .then(inv -> null); // método void
+                  .then(inv -> null);
 
             String id = service.updateCustomer(dto, "CUS-777");
 
             assertEquals("CUS-777", id);
-            // tu implementación actual NO hace save aquí
             verify(customerRepository, never()).save(any(Customer.class));
         }
     }

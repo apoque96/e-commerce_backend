@@ -26,28 +26,27 @@ public interface ProductRepository extends JpaRepository<Product, String> {
         Boolean getWishlisted();
         String getProductName();
         String getImageUrl();
-        String getImageName();
         Instant getCreatedAt();
     }
 
     // JPQL con promedio de rating (AVG) y cálculo de precio con descuento
     @Query("""
-        select 
+        select
           p.productId as productId,
           p.price as price,
-          p.discountPercentage as discountPercentage,
-          (p.price - (p.price * (p.discountPercentage / 100.0))) as discountedPrice,
+          p.discount * 100 as discountPercentage,
+          (p.price - (p.price * p.discount)) as discountedPrice,
           coalesce(avg(r.rating), 0) as rating,
           false as wishlisted,
           p.name as productName,
-          (select i.url from ProductImage i where i.product = p and i.isMain = true) as imageUrl,
-          (select i.name from ProductImage i where i.product = p and i.isMain = true) as imageName,
+          (select i.imageName from ProductImage i where i.product = p) as imageUrl,
           p.createdAt as createdAt
         from Product p
-        left join p.reviews r
+        left join p.orderProducts o
+        left join o.reviews r
         where p.deletedAt is null
-        group by p.productId, p.price, p.discountPercentage, p.name, p.createdAt
-        """)
+        group by p.productId, p.price, p.discount, p.name, p.createdAt
+       \s""")
     Page<ProductSummaryProjection> findAllSummaries(Pageable pageable);
 
     @Transactional

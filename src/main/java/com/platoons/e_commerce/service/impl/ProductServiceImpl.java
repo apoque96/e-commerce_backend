@@ -39,7 +39,6 @@ public class ProductServiceImpl implements IProductService {
     private final CategoryRepository categoryRepository;
     private final ExtraInfoRepository extraInfoRepository;
 
-    // NUEVO: listado paginado con proyección (usa @Query del repository)
     @Override
     public Page<ProductRepository.ProductSummaryProjection> fetchProducts(Pageable pageable) {
         return productRepository.findAllSummaries(pageable);

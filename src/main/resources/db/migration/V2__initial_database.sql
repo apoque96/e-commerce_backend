@@ -23,7 +23,7 @@ CREATE TABLE address
 
 CREATE TABLE authority
 (
-    authority_id BIGINT       NOT NULL,
+    authority_id BIGINT AUTO_INCREMENT NOT NULL,
     authority    VARCHAR(255) NOT NULL,
     customer_id  VARCHAR(255) NULL,
     CONSTRAINT pk_authority PRIMARY KEY (authority_id)
@@ -31,7 +31,7 @@ CREATE TABLE authority
 
 CREATE TABLE category
 (
-    category_id   BIGINT       NOT NULL,
+    category_id   BIGINT AUTO_INCREMENT NOT NULL,
     created_at    datetime     NOT NULL,
     updated_at    datetime NULL,
     deleted_at    datetime NULL,
@@ -42,7 +42,7 @@ CREATE TABLE category
 
 CREATE TABLE coupon
 (
-    coupon_id   BIGINT      NOT NULL,
+    coupon_id   BIGINT AUTO_INCREMENT NOT NULL,
     coupon_code VARCHAR(20) NOT NULL,
     discount_amount DOUBLE NOT NULL,
     CONSTRAINT pk_coupon PRIMARY KEY (coupon_id)
@@ -64,7 +64,7 @@ CREATE TABLE extra_info
 
 CREATE TABLE order_product
 (
-    order_product_id BIGINT       NOT NULL,
+    order_product_id BIGINT AUTO_INCREMENT NOT NULL,
     created_at       datetime     NOT NULL,
     updated_at       datetime NULL,
     deleted_at       datetime NULL,
@@ -78,7 +78,7 @@ CREATE TABLE order_product
 
 CREATE TABLE order_status
 (
-    status_id     BIGINT      NOT NULL,
+    status_id     BIGINT AUTO_INCREMENT NOT NULL,
     created_at    datetime    NOT NULL,
     updated_at    datetime NULL,
     deleted_at    datetime NULL,
@@ -89,7 +89,7 @@ CREATE TABLE order_status
 
 CREATE TABLE orders
 (
-    order_id    BIGINT       NOT NULL,
+    order_id    BIGINT AUTO_INCREMENT NOT NULL,
     created_at  datetime     NOT NULL,
     updated_at  datetime NULL,
     deleted_at  datetime NULL,
@@ -103,7 +103,7 @@ CREATE TABLE orders
 
 CREATE TABLE payment
 (
-    payment_id    BIGINT   NOT NULL,
+    payment_id    BIGINT AUTO_INCREMENT NOT NULL,
     created_at    datetime NOT NULL,
     updated_at    datetime NULL,
     deleted_at    datetime NULL,
@@ -118,7 +118,7 @@ CREATE TABLE payment
 
 CREATE TABLE payment_method
 (
-    method_id     BIGINT      NOT NULL,
+    method_id     BIGINT AUTO_INCREMENT NOT NULL,
     created_at    datetime    NOT NULL,
     updated_at    datetime NULL,
     deleted_at    datetime NULL,
@@ -129,7 +129,7 @@ CREATE TABLE payment_method
 
 CREATE TABLE payment_status
 (
-    status_id     BIGINT      NOT NULL,
+    status_id     BIGINT AUTO_INCREMENT NOT NULL,
     created_at    datetime    NOT NULL,
     updated_at    datetime NULL,
     deleted_at    datetime NULL,
@@ -158,7 +158,7 @@ CREATE TABLE product
 
 CREATE TABLE product_images
 (
-    product_image_id BIGINT       NOT NULL,
+    product_image_id BIGINT AUTO_INCREMENT NOT NULL,
     created_at       datetime     NOT NULL,
     updated_at       datetime NULL,
     deleted_at       datetime NULL,
@@ -170,7 +170,7 @@ CREATE TABLE product_images
 
 CREATE TABLE reply
 (
-    reply_id   BIGINT        NOT NULL,
+    reply_id   BIGINT AUTO_INCREMENT NOT NULL,
     created_at datetime      NOT NULL,
     updated_at datetime NULL,
     deleted_at datetime NULL,
@@ -181,7 +181,7 @@ CREATE TABLE reply
 
 CREATE TABLE review
 (
-    review_id        BIGINT        NOT NULL,
+    review_id        BIGINT AUTO_INCREMENT NOT NULL,
     created_at       datetime      NOT NULL,
     updated_at       datetime NULL,
     deleted_at       datetime NULL,
@@ -194,7 +194,7 @@ CREATE TABLE review
 
 CREATE TABLE shipping
 (
-    shipping_id   BIGINT      NOT NULL,
+    shipping_id   BIGINT AUTO_INCREMENT NOT NULL,
     created_at    datetime    NOT NULL,
     updated_at    datetime NULL,
     deleted_at    datetime NULL,
