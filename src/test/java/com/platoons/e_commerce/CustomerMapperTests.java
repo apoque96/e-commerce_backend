@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.platoons.e_commerce.dto.CreateUserRequestDto;
 import com.platoons.e_commerce.dto.CustomerDto;
@@ -12,6 +13,7 @@ import com.platoons.e_commerce.dto.UpdateCustomerRequestDto;
 import com.platoons.e_commerce.entity.Customer;
 import com.platoons.e_commerce.mapper.CustomerMapper;
 
+@ActiveProfiles("test")
 public class CustomerMapperTests {
 
     @Test

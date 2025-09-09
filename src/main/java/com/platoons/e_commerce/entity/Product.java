@@ -27,6 +27,9 @@ public class Product extends BaseEntity{
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private Set<ProductImage> productImages;
 
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private Set<OrderProduct> orderProducts;
+
     @Id
     @UuidGenerator
     private String productId;

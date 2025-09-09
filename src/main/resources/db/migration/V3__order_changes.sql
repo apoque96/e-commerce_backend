@@ -16,9 +16,6 @@ ALTER TABLE orders
     ADD status_id BIGINT NULL;
 
 ALTER TABLE orders
-    MODIFY status_id BIGINT NOT NULL;
-
-ALTER TABLE orders
     ADD CONSTRAINT uc_orders_payment UNIQUE (payment_id);
 
 ALTER TABLE orders

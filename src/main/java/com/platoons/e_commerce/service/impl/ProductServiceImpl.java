@@ -1,5 +1,14 @@
 package com.platoons.e_commerce.service.impl;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.platoons.e_commerce.dto.CreateProductRequestDto;
 import com.platoons.e_commerce.dto.FetchProductResponseDto;
 import com.platoons.e_commerce.entity.Category;
@@ -15,14 +24,9 @@ import com.platoons.e_commerce.repository.ProductImageRepository;
 import com.platoons.e_commerce.repository.ProductRepository;
 import com.platoons.e_commerce.service.IProductService;
 import com.platoons.e_commerce.utils.ImageUtils;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -34,6 +38,11 @@ public class ProductServiceImpl implements IProductService {
     private final ProductImageRepository productImageRepository;
     private final CategoryRepository categoryRepository;
     private final ExtraInfoRepository extraInfoRepository;
+
+    @Override
+    public Page<ProductRepository.ProductSummaryProjection> fetchProducts(Pageable pageable) {
+        return productRepository.findAllSummaries(pageable);
+    }
 
     @Override
     public FetchProductResponseDto fetchProduct(String productId) {
@@ -55,14 +64,10 @@ public class ProductServiceImpl implements IProductService {
                     "Quantity of images sent does not equal amount of colors sent");
 
         // Maps the dto to the entity
-        ProductMapper.mapCreateProductRequestDtoToProduct(
-                productDto, product
-        );
+        ProductMapper.mapCreateProductRequestDtoToProduct(productDto, product);
 
         ExtraInfo extraInfo = new ExtraInfo();
         extraInfo.setInformation(productDto.getDescription());
-        product.setExtraInfo(extraInfo);
-
         product.setExtraInfo(extraInfo);
 
         // Finds the category
@@ -74,23 +79,23 @@ public class ProductServiceImpl implements IProductService {
 
         // Checks if each of the files sent are images
         List<String> imagesName = new ArrayList<>();
-        for(MultipartFile image : images) {
-            if(imageUtils.fileIsImage(image))
+        for (MultipartFile image : images) {
+            if (imageUtils.fileIsImage(image))
                 imagesName.add(image.getOriginalFilename());
             else
                 throw new BadRequestException("At least one of the files is not an image");
         }
 
-        //Saves the product
+        // Saves the product
         log.info("Saving product");
         Product savedProduct = productRepository.save(product);
         extraInfo.setProduct(savedProduct);
         log.info("Saving extra info");
         extraInfoRepository.save(extraInfo);
 
-        //Saves the images
+        // Saves the images
         log.info("Saving product images");
-        for(int i = 0; i < imagesName.size(); i++){
+        for (int i = 0; i < imagesName.size(); i++) {
             String imageName = imagesName.get(i);
 
             ProductImage productImage = new ProductImage();
@@ -105,7 +110,6 @@ public class ProductServiceImpl implements IProductService {
             productImageRepository.save(productImage);
         }
 
-
         return savedProduct.getProductId();
     }
 
@@ -119,7 +123,7 @@ public class ProductServiceImpl implements IProductService {
         var optionalProduct = productRepository.findById(productId);
 
         // Early return for products that don't exist
-        if(optionalProduct.isEmpty())
+        if (optionalProduct.isEmpty())
             return;
 
         var savedProduct = optionalProduct.get();
