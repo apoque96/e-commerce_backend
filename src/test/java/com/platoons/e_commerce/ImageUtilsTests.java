@@ -1,4 +1,4 @@
-package com.platoons.e_commerce.utils;
+package com.platoons.e_commerce;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -9,6 +9,8 @@ import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.platoons.e_commerce.utils.ImageUtils;
 
 @ExtendWith(MockitoExtension.class)
 class ImageUtilsTest {
