@@ -39,7 +39,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
           coalesce(avg(r.rating), 0) as rating,
           false as wishlisted,
           p.name as productName,
-          (select i.imageName from ProductImage i where i.product = p) as imageUrl,
+          (select MIN(i.imageName) from ProductImage i where i.product = p) as imageUrl,
           p.createdAt as createdAt
         from Product p
         left join p.orderProducts o
